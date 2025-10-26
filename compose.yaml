@@ -1,0 +1,47 @@
+services:
+  app:
+    build: .
+    ports:
+      - "3001:3000"
+    environment:
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_NAME=split-service
+      - DB_USER=split_service_user
+      - DB_PASSWORD=split_service_pass
+      - NODE_ENV=test
+    profiles:
+      - build
+    depends_on:
+      - db
+      - redis
+      - localstack
+  db:
+    image: postgres:15
+    container_name: my-postgres-db
+    restart: always
+    environment:
+      POSTGRES_DB: split-service
+      POSTGRES_USER: split_service_user
+      POSTGRES_PASSWORD: split_service_pass
+    ports:
+      - "5432:5432"
+
+  redis:
+    image: redis
+    command: redis-server
+    ports:
+      - "6379:6379"
+
+  localstack:
+    container_name: "${LOCALSTACK_DOCKER_NAME:-localstack-main}"
+    image: localstack/localstack
+    ports:
+      - "127.0.0.1:4566:4566"            # LocalStack Gateway
+      - "127.0.0.1:4510-4559:4510-4559"  # external services port range
+    volumes:
+      - ./scripts/localstack-setup.sh:/etc/localstack/init/ready.d/script.sh
+    environment:
+      # LocalStack configuration: https://docs.localstack.cloud/references/configuration/
+      - SERVICES=sns,s3
+      - DEBUG=${DEBUG:-0}

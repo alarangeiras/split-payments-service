@@ -1,0 +1,3 @@
+export enum ReasonTypes {
+	EXPENSES_BATCH_UPLOAD = "EXPENSES_BATCH_UPLOAD",
+}
