@@ -25,12 +25,14 @@ services:
     image: localstack/localstack
     ports:
       - "127.0.0.1:4567:4566"            # LocalStack Gateway
-      - "50000-50050:50000-50050"        # external services port range      
+      - "${LOCALSTACK_START_PORT:-50000}-${LOCALSTACK_START_PORT:-50050}:${LOCALSTACK_START_PORT:-50000}-${LOCALSTACK_START_PORT:-50050}"        # external services port range      
     volumes:
       - ./scripts/localstack-setup.sh:/etc/localstack/init/ready.d/script.sh
+    env_file:
+      - .env.test
     environment:
       # LocalStack configuration: https://docs.localstack.cloud/references/configuration/
       - SERVICES=sns,s3
       - DEBUG=${DEBUG:-0}
-      - EXTERNAL_SERVICE_PORTS_START=50000
-      - EXTERNAL_SERVICE_PORTS_END=50050      
+      - EXTERNAL_SERVICE_PORTS_START=${LOCALSTACK_START_PORT:-50000}
+      - EXTERNAL_SERVICE_PORTS_END=${LOCALSTACK_START_PORT:-50050}

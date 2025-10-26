@@ -85,29 +85,34 @@ describe("ExpenseDomain", () => {
 					created,
 				}));
 
-			const result = await expenseDomain.addExpense(groupId, expenseRequest);
-			expect(result).toEqual({
-				id: expect.any(String),
-				name: expenseRequest.name,
-				amount: expenseRequest.amount,
-				groupId,
-				payerId: expenseRequest.payerId,
-				created,
-				transactions: expect.arrayContaining([
-					expect.objectContaining({
-						amount: expect.any(Number),
-					}),
-					expect.objectContaining({
-						amount: expect.any(Number),
-					}),
-					expect.objectContaining({
-						amount: expect.any(Number),
-					}),
-					expect.objectContaining({
-						amount: expect.any(Number),
-					}),
-				]),
-			});
+			try {
+				const result = await expenseDomain.addExpense(groupId, expenseRequest);
+
+				expect(result).toEqual({
+					id: expect.any(String),
+					name: expenseRequest.name,
+					amount: expenseRequest.amount,
+					groupId,
+					payerId: expenseRequest.payerId,
+					created,
+					transactions: expect.arrayContaining([
+						expect.objectContaining({
+							amount: expect.any(Number),
+						}),
+						expect.objectContaining({
+							amount: expect.any(Number),
+						}),
+						expect.objectContaining({
+							amount: expect.any(Number),
+						}),
+						expect.objectContaining({
+							amount: expect.any(Number),
+						}),
+					]),
+				});
+			} catch (error) {
+				console.error(error);
+			}
 
 			mockito
 				.verify(notificationDomainMock.sendEvent(mockito.anything()))

@@ -34,29 +34,33 @@ describe("/v1/expense", () => {
 				amount: 1000,
 				payerId: groupMembers[0],
 			});
-			expect(response.status).toBe(201);
-			expect(response.body).toEqual({
-				id: expect.any(String),
-				name: "Bill",
-				amount: "1000",
-				groupId: expect.any(String),
-				payerId: expect.any(String),
-				created: expect.any(String),
-				transactions: expect.arrayContaining([
-					expect.objectContaining({
-						amount: "-1000",
-					}),
-					expect.objectContaining({
-						amount: "334",
-					}),
-					expect.objectContaining({
-						amount: "333",
-					}),
-					expect.objectContaining({
-						amount: "333",
-					}),
-				]),
-			});
+			expect(response).toEqual(
+				expect.objectContaining({
+					status: 201,
+					body: {
+						id: expect.any(String),
+						name: "Bill",
+						amount: "1000",
+						groupId: expect.any(String),
+						payerId: expect.any(String),
+						created: expect.any(String),
+						transactions: expect.arrayContaining([
+							expect.objectContaining({
+								amount: "-1000",
+							}),
+							expect.objectContaining({
+								amount: "334",
+							}),
+							expect.objectContaining({
+								amount: "333",
+							}),
+							expect.objectContaining({
+								amount: "333",
+							}),
+						]),
+					},
+				}),
+			);
 		});
 	});
 	describe("POST /:groupId/balance", () => {
