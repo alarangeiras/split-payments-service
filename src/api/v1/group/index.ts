@@ -1,18 +1,18 @@
-import { type Request, type Response, Router } from "express";
-import { StatusCodes } from "http-status-codes";
-import z from "zod";
-import { buildGroupDomain } from "../../../domain/group";
+import { type Request, type Response, Router } from 'express';
+import { StatusCodes } from 'http-status-codes';
+import z from 'zod';
+import { buildGroupDomain } from '../../../domain/group';
 import {
 	validateBody,
 	validatePathParam,
-} from "../../../middlewares/request-validation";
-import { AddGroupMember, CreateGroup } from "../group/validation";
+} from '../../../middlewares/request-validation';
+import { AddGroupMember, CreateGroup } from '../group/validation';
 
 const router = Router();
 const groupDomain = buildGroupDomain();
 
 router.post(
-	"/",
+	'/',
 	validateBody(CreateGroup),
 	async (req: Request, res: Response) => {
 		const group = CreateGroup.parse(req.body);
@@ -22,7 +22,7 @@ router.post(
 );
 
 router.get(
-	"/:id",
+	'/:id',
 	validatePathParam(z.object({ id: z.uuid() })),
 	async (req: Request, res: Response) => {
 		const id = req.params.id as string;
@@ -32,7 +32,7 @@ router.get(
 );
 
 router.post(
-	"/:id/create-member",
+	'/:id/create-member',
 	validatePathParam(z.object({ id: z.uuid() })),
 	validateBody(AddGroupMember),
 	async (req: Request, res: Response) => {
@@ -44,7 +44,7 @@ router.post(
 );
 
 router.get(
-	"/:id/members",
+	'/:id/members',
 	validatePathParam(z.object({ id: z.uuid() })),
 	async (req: Request, res: Response) => {
 		const id = req.params.id as string;

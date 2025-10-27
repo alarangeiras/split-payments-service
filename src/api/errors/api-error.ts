@@ -1,4 +1,4 @@
-import type { ApiData } from "../../types/api-data";
+import type { ApiData } from '../../types/api-data';
 
 export class ApiError extends Error {
 	constructor(

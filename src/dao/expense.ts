@@ -1,8 +1,8 @@
-import { randomUUID } from "node:crypto";
-import type knex from "knex";
-import type { Knex } from "knex";
-import db from "../config/knex";
-import type { ExpenseDBModel, ExpenseModel } from "../model/expense";
+import { randomUUID } from 'node:crypto';
+import type knex from 'knex';
+import type { Knex } from 'knex';
+import db from '../config/knex';
+import type { ExpenseDBModel, ExpenseModel } from '../model/expense';
 
 export class ExpenseDao {
 	constructor(private readonly knex: Knex) {}
@@ -12,7 +12,7 @@ export class ExpenseDao {
 		trx: knex.Knex.Transaction,
 	) {
 		const id = randomUUID();
-		await trx.table("expenses").insert({
+		await trx.table('expenses').insert({
 			id,
 			name: params.name,
 			amount: params.amount,
@@ -21,16 +21,16 @@ export class ExpenseDao {
 		});
 
 		const result = await trx
-			.table<ExpenseDBModel>("expenses")
-			.where("id", id)
+			.table<ExpenseDBModel>('expenses')
+			.where('id', id)
 			.first();
 		return this.mapToModel(result);
 	}
 
 	async findById(expenseId: string) {
 		const result = await this.knex
-			.table<ExpenseDBModel>("expenses")
-			.where("id", expenseId)
+			.table<ExpenseDBModel>('expenses')
+			.where('id', expenseId)
 			.first();
 
 		if (!result) return null;

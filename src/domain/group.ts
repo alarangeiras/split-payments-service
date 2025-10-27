@@ -1,11 +1,11 @@
-import { NotFoundError } from "../api/errors/not-found-error";
+import { NotFoundError } from '../api/errors/not-found-error';
 import {
 	buildGroupDao,
 	buildMemberDao,
 	type GroupDao,
 	type MemberDao,
-} from "../dao";
-import type { GroupModel, MemberModel } from "../model";
+} from '../dao';
+import type { GroupModel, MemberModel } from '../model';
 
 export class GroupDomain {
 	constructor(
@@ -13,20 +13,20 @@ export class GroupDomain {
 		private readonly memberDao: MemberDao,
 	) {}
 
-	async create(group: Omit<GroupModel, "id">) {
+	async create(group: Omit<GroupModel, 'id'>) {
 		return await this.groupDao.create(group);
 	}
 
 	async find(id: string) {
 		const group = await this.groupDao.findById(id);
-		if (!group) throw new NotFoundError("group not found");
+		if (!group) throw new NotFoundError('group not found');
 
 		return group;
 	}
 
 	async createMember(
 		groupId: string,
-		member: Omit<MemberModel, "id" | "groupId">,
+		member: Omit<MemberModel, 'id' | 'groupId'>,
 	) {
 		await this.find(groupId);
 
@@ -35,7 +35,7 @@ export class GroupDomain {
 
 	async addExistingMember(
 		groupId: string,
-		member: Omit<MemberModel, "id" | "groupId">,
+		member: Omit<MemberModel, 'id' | 'groupId'>,
 	) {
 		await this.find(groupId);
 

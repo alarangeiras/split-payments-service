@@ -1,9 +1,9 @@
-import type { SNSClient } from "@aws-sdk/client-sns";
-import { NotificationTemplate, NotificationType } from "../types/notification";
-import { mockito } from "../utils/mock";
-import { NotificationDomain } from "./notification";
+import type { SNSClient } from '@aws-sdk/client-sns';
+import { NotificationTemplate, NotificationType } from '../types/notification';
+import { mockito } from '../utils/mock';
+import { NotificationDomain } from './notification';
 
-describe("NotificationDomain", () => {
+describe('NotificationDomain', () => {
 	let notificationDomain: NotificationDomain;
 	const snsClientMock = mockito.mock<SNSClient>();
 	beforeEach(() => {
@@ -12,13 +12,13 @@ describe("NotificationDomain", () => {
 			mockito.instance(snsClientMock),
 		);
 	});
-	it("send event", async () => {
+	it('send event', async () => {
 		await notificationDomain.sendEvent({
 			type: NotificationType.EMAIL,
-			destination: "dummy@destination.com",
+			destination: 'dummy@destination.com',
 			template: NotificationTemplate.NEW_EXPENSE_RECORDED,
 			metadata: {
-				name: "Dummy",
+				name: 'Dummy',
 			},
 		});
 		mockito.verify(snsClientMock.send(mockito.anything())).called();

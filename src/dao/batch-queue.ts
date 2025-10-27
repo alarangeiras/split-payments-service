@@ -1,7 +1,7 @@
-import { randomUUID } from "node:crypto";
-import type { Knex } from "knex";
-import db from "../config/knex";
-import type { ReasonTypes } from "../types/reason";
+import { randomUUID } from 'node:crypto';
+import type { Knex } from 'knex';
+import db from '../config/knex';
+import type { ReasonTypes } from '../types/reason';
 
 export class BatchQueueDao {
 	constructor(private readonly knex: Knex) {}
@@ -11,7 +11,7 @@ export class BatchQueueDao {
 		reason: ReasonTypes;
 	}) {
 		const id = randomUUID();
-		await this.knex("batch-queue").insert({
+		await this.knex('batch-queue').insert({
 			id,
 			group_id: params.groupId,
 			reason: params.reason,

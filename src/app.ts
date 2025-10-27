@@ -1,5 +1,5 @@
-import app from "./config/app";
-import logger from "./config/logger";
+import app from './config/app';
+import logger from './config/logger';
 
 if (require.main === module) {
 	app.listen(3000, () => {

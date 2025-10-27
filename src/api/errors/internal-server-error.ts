@@ -1,5 +1,5 @@
-import { StatusCodes } from "http-status-codes";
-import { ApiError } from "./api-error";
+import { StatusCodes } from 'http-status-codes';
+import { ApiError } from './api-error';
 
 export class InternalServerError extends ApiError {
 	constructor(message: string, error?: Error | unknown) {

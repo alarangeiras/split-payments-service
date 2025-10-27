@@ -1,4 +1,4 @@
-import { randomUUID } from "crypto";
+import { randomUUID } from 'crypto';
 import type {
 	BatchQueueDao,
 	ExpenseDao,
@@ -6,13 +6,13 @@ import type {
 	MemberDao,
 	SettlementDao,
 	TransactionDao,
-} from "../dao";
-import type { ExpenseModel, GroupModel, MemberModel } from "../model";
-import { mockito } from "../utils/mock";
-import { ExpenseDomain } from "./expense";
-import type { NotificationDomain } from "./notification";
+} from '../dao';
+import type { ExpenseModel, GroupModel, MemberModel } from '../model';
+import { mockito } from '../utils/mock';
+import { ExpenseDomain } from './expense';
+import type { NotificationDomain } from './notification';
 
-describe("ExpenseDomain", () => {
+describe('ExpenseDomain', () => {
 	let expenseDomain: ExpenseDomain;
 	const groupDaoMock = mockito.mock<GroupDao>();
 	const memberDaoMock = mockito.mock<MemberDao>();
@@ -34,12 +34,12 @@ describe("ExpenseDomain", () => {
 		);
 	});
 
-	describe("addExpense", () => {
-		it("should add a new expense", async () => {
+	describe('addExpense', () => {
+		it('should add a new expense', async () => {
 			const groupId = randomUUID();
 
 			const expenseRequest = {
-				name: "New Expense",
+				name: 'New Expense',
 				amount: 1000,
 				payerId: randomUUID(),
 			} as ExpenseModel;
@@ -120,8 +120,8 @@ describe("ExpenseDomain", () => {
 		});
 	});
 
-	describe("splitPayments", () => {
-		it("should split equaly by the remaining members", () => {
+	describe('splitPayments', () => {
+		it('should split equaly by the remaining members', () => {
 			const expenseAmount = 1000; // amount in cents
 			const members = [
 				{ id: randomUUID() },
@@ -139,7 +139,7 @@ describe("ExpenseDomain", () => {
 				},
 			]);
 		});
-		it("should split equaly by the remaining members and add the left over on the first occurrence", () => {
+		it('should split equaly by the remaining members and add the left over on the first occurrence', () => {
 			const expenseAmount = 1000; // amount in cents
 			const members = [
 				{ id: randomUUID() },

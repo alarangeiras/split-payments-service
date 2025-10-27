@@ -1,15 +1,14 @@
-import { randomUUID } from "node:crypto";
-import type { Knex } from "knex";
-import db from "../config/knex";
-import type { MemberDBModel, MemberModel } from "../model/member";
+import { randomUUID } from 'node:crypto';
+import type { Knex } from 'knex';
+import db from '../config/knex';
+import type { MemberDBModel, MemberModel } from '../model/member';
 
-const TABLE_NAME = "members";
+const TABLE_NAME = 'members';
 
 export class MemberDao {
-
 	constructor(private readonly knex: Knex) {}
 
-	async create(groupId: string, member: Omit<MemberModel, "id" | "groupId">) {
+	async create(groupId: string, member: Omit<MemberModel, 'id' | 'groupId'>) {
 		const id = randomUUID();
 		await this.knex.table(TABLE_NAME).insert({
 			...member,
@@ -17,7 +16,7 @@ export class MemberDao {
 			group_id: groupId,
 		});
 
-		return this.mapToModel(await db.table(TABLE_NAME).where("id", id).first());
+		return this.mapToModel(await db.table(TABLE_NAME).where('id', id).first());
 	}
 
 	async findBy(
@@ -29,14 +28,14 @@ export class MemberDao {
 	) {
 		const query = this.knex
 			.table<MemberDBModel>(TABLE_NAME)
-			.where("group_id", groupId);
+			.where('group_id', groupId);
 
 		if (criteria?.includedMembers?.length) {
-			query.whereIn("id", criteria?.includedMembers);
+			query.whereIn('id', criteria?.includedMembers);
 		}
 
 		if (criteria?.excludedMembers?.length) {
-			query.whereNotIn("id", criteria?.excludedMembers);
+			query.whereNotIn('id', criteria?.excludedMembers);
 		}
 
 		const result = await query;

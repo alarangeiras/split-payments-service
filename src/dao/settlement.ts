@@ -1,5 +1,5 @@
-import { randomUUID } from "node:crypto";
-import type { Knex } from "knex";
+import { randomUUID } from 'node:crypto';
+import type { Knex } from 'knex';
 
 export class SettlementDao {
 	async create(
@@ -13,7 +13,7 @@ export class SettlementDao {
 		trx: Knex.Transaction,
 	) {
 		const id = randomUUID();
-		await trx.table("settlements").insert({
+		await trx.table('settlements').insert({
 			id,
 			sender_id: params.senderId,
 			receiver_id: params.receiverId,

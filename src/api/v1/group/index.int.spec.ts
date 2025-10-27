@@ -1,28 +1,28 @@
-import { randomUUID } from "node:crypto";
-import db from "../../../config/knex";
-import supertest from "../../../config/supertest";
+import { randomUUID } from 'node:crypto';
+import db from '../../../config/knex';
+import supertest from '../../../config/supertest';
 
-describe("/v1/group", () => {
-	describe("POST /", () => {
-		it("should persist a new group", async () => {
-			const response = await supertest.post("/v1/group").send({
-				name: "Dummy group",
+describe('/v1/group', () => {
+	describe('POST /', () => {
+		it('should persist a new group', async () => {
+			const response = await supertest.post('/v1/group').send({
+				name: 'Dummy group',
 			});
 			expect(response.status).toBe(201);
 			await expect(
-				db.table("groups").where("id", response.body.id).first(),
+				db.table('groups').where('id', response.body.id).first(),
 			).toBeDefined();
 		});
-		it("should receive a 400 when the payload is not correct", async () => {
-			const response = await supertest.post("/v1/group").send({});
+		it('should receive a 400 when the payload is not correct', async () => {
+			const response = await supertest.post('/v1/group').send({});
 			expect(response.status).toBe(400);
 		});
 	});
 
-	describe("GET /:id", () => {
-		it("should fetch a recently added group", async () => {
-			const response = await supertest.post("/v1/group").send({
-				name: "Dummy group",
+	describe('GET /:id', () => {
+		it('should fetch a recently added group', async () => {
+			const response = await supertest.post('/v1/group').send({
+				name: 'Dummy group',
 			});
 
 			const fetchResponse = await supertest.get(
@@ -31,30 +31,30 @@ describe("/v1/group", () => {
 			expect(fetchResponse.status).toBe(200);
 			expect(fetchResponse.body).toEqual(response.body);
 		});
-		it("should receive a not found when the group does not exists", async () => {
+		it('should receive a not found when the group does not exists', async () => {
 			const fetchResponse = await supertest.get(`/v1/group/${randomUUID()}`);
 			expect(fetchResponse.status).toBe(404);
 		});
 	});
 
-	describe("POST /:id/create-member", () => {
-		it("should fetch a recently added group", async () => {
-			const response = await supertest.post("/v1/group").send({
-				name: "Dummy group",
+	describe('POST /:id/create-member', () => {
+		it('should fetch a recently added group', async () => {
+			const response = await supertest.post('/v1/group').send({
+				name: 'Dummy group',
 			});
 
 			const memberResponse = await supertest
 				.post(`/v1/group/${response.body.id}/create-member`)
 				.send({
-					name: "New Member",
-					email: "dummy@gmail.com",
+					name: 'New Member',
+					email: 'dummy@gmail.com',
 				});
 			expect(memberResponse.status).toBe(201);
 		});
-		it("should receive a 400 when the payload is not correct", async () => {
-			const response = await supertest.post("/v1/group").send({
-				name: "Dummy group",
-				email: "dummy@gmail.com",
+		it('should receive a 400 when the payload is not correct', async () => {
+			const response = await supertest.post('/v1/group').send({
+				name: 'Dummy group',
+				email: 'dummy@gmail.com',
 			});
 
 			const memberResponse = await supertest
@@ -62,29 +62,29 @@ describe("/v1/group", () => {
 				.send({});
 			expect(memberResponse.status).toBe(400);
 		});
-		it("should receive a not found when the group does not exists", async () => {
+		it('should receive a not found when the group does not exists', async () => {
 			const fetchResponse = await supertest
 				.post(`/v1/group/${randomUUID()}/create-member`)
 				.send({
-					name: "New Member",
-					email: "dummy@gmail.com",
+					name: 'New Member',
+					email: 'dummy@gmail.com',
 				});
 			expect(fetchResponse.status).toBe(404);
 		});
 	});
-	describe("GET /:id/members", () => {
-		it("should fetch all members", async () => {
-			const response = await supertest.post("/v1/group").send({
-				name: "Dummy group",
+	describe('GET /:id/members', () => {
+		it('should fetch all members', async () => {
+			const response = await supertest.post('/v1/group').send({
+				name: 'Dummy group',
 			});
 
 			await supertest.post(`/v1/group/${response.body.id}/create-member`).send({
-				name: "New Member 1",
-				email: "dummy@gmail.com",
+				name: 'New Member 1',
+				email: 'dummy@gmail.com',
 			});
 			await supertest.post(`/v1/group/${response.body.id}/create-member`).send({
-				name: "New Member 2",
-				email: "dummy@gmail.com",
+				name: 'New Member 2',
+				email: 'dummy@gmail.com',
 			});
 
 			const membersResponse = await supertest.get(
@@ -94,13 +94,13 @@ describe("/v1/group", () => {
 			expect(membersResponse.body).toEqual([
 				{
 					id: expect.any(String),
-					name: "New Member 1",
+					name: 'New Member 1',
 					email: expect.any(String),
 					groupId: response.body.id,
 				},
 				{
 					id: expect.any(String),
-					name: "New Member 2",
+					name: 'New Member 2',
 					email: expect.any(String),
 					groupId: response.body.id,
 				},

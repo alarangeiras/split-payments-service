@@ -1,4 +1,4 @@
-import type { MaybeArray } from "../utils/array";
+import type { MaybeArray } from '../utils/array';
 
 export type ApiValue = string | number | boolean;
 export type ApiData = MaybeArray<{

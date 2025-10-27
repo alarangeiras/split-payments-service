@@ -1,7 +1,7 @@
-import { PublishCommand, type SNSClient } from "@aws-sdk/client-sns";
-import logger from "../config/logger";
-import snsClient from "../config/sns";
-import type { NotificationEvent } from "../types/notification";
+import { PublishCommand, type SNSClient } from '@aws-sdk/client-sns';
+import logger from '../config/logger';
+import snsClient from '../config/sns';
+import type { NotificationEvent } from '../types/notification';
 
 export class NotificationDomain {
 	constructor(private readonly snsClient: SNSClient) {}
@@ -16,12 +16,12 @@ export class NotificationDomain {
 			const command = new PublishCommand(publishParams);
 			await this.snsClient.send(command);
 			logger.info({
-				message: "Publishing message",
+				message: 'Publishing message',
 				topicArn,
 				notification,
 			});
 		} catch (error) {
-			logger.error(error, "Error publishing message:");
+			logger.error(error, 'Error publishing message:');
 			throw error;
 		}
 	}

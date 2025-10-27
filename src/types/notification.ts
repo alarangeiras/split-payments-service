@@ -1,10 +1,10 @@
 export enum NotificationType {
-	EMAIL = "EMAIL",
+	EMAIL = 'EMAIL',
 }
 
 export enum NotificationTemplate {
-	NEW_EXPENSE_RECORDED = "NEW_EXPENSE_RECORDED",
-	DEBT_SETTLED = "DEBT_SETTLED",
+	NEW_EXPENSE_RECORDED = 'NEW_EXPENSE_RECORDED',
+	DEBT_SETTLED = 'DEBT_SETTLED',
 }
 
 export type NotificationEvent = {

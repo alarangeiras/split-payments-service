@@ -1,1 +1,1 @@
-export * as mockito from "ts-mockito";
+export * as mockito from 'ts-mockito';

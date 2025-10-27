@@ -1,10 +1,10 @@
-import { randomUUID } from "node:crypto";
-import { PutObjectCommand } from "@aws-sdk/client-s3";
-import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
-import { Duration } from "luxon";
-import { NotFoundError, PreconditionFailedError } from "../api/errors";
-import db from "../config/knex";
-import s3Client from "../config/s3";
+import { randomUUID } from 'node:crypto';
+import { PutObjectCommand } from '@aws-sdk/client-s3';
+import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
+import { Duration } from 'luxon';
+import { NotFoundError, PreconditionFailedError } from '../api/errors';
+import db from '../config/knex';
+import s3Client from '../config/s3';
 import {
 	type BatchQueueDao,
 	buildBatchQueueDao,
@@ -18,15 +18,15 @@ import {
 	type MemberDao,
 	type SettlementDao,
 	type TransactionDao,
-} from "../dao";
-import type { ExpenseModel, MemberModel } from "../model";
-import { NotificationTemplate, NotificationType } from "../types/notification";
-import { ReasonTypes } from "../types/reason";
-import { ensureArray } from "../utils/array";
+} from '../dao';
+import type { ExpenseModel, MemberModel } from '../model';
+import { NotificationTemplate, NotificationType } from '../types/notification';
+import { ReasonTypes } from '../types/reason';
+import { ensureArray } from '../utils/array';
 import {
 	buildNotificationDomain,
 	type NotificationDomain,
-} from "./notification";
+} from './notification';
 
 export class ExpenseDomain {
 	constructor(
@@ -41,7 +41,7 @@ export class ExpenseDomain {
 
 	async addExpense(
 		groupId: string,
-		expense: Pick<ExpenseModel, "name" | "amount" | "payerId"> & {
+		expense: Pick<ExpenseModel, 'name' | 'amount' | 'payerId'> & {
 			involvedMembers?: string[];
 		},
 	) {
@@ -52,14 +52,14 @@ export class ExpenseDomain {
 			involvedMembers: _involvedMembers,
 		} = expense;
 		const group = await this.groupDao.findById(groupId);
-		if (!group) throw new NotFoundError("Group not found", { groupId });
+		if (!group) throw new NotFoundError('Group not found', { groupId });
 
 		const [payer] = await this.memberDao.findBy(groupId, {
 			includedMembers: [payerId],
 		});
 
 		if (!payer)
-			throw new NotFoundError("Payer not found in the group", {
+			throw new NotFoundError('Payer not found in the group', {
 				groupId,
 				payerId: payerId,
 			});
@@ -72,7 +72,7 @@ export class ExpenseDomain {
 		});
 
 		if (!members?.length) {
-			throw new PreconditionFailedError("No member found in the group", {
+			throw new PreconditionFailedError('No member found in the group', {
 				groupId,
 				...(involvedMembers?.length ? { involvedMembers } : {}),
 			});
@@ -156,7 +156,7 @@ export class ExpenseDomain {
 
 	async getBalances(groupId: string) {
 		const group = await this.groupDao.findById(groupId);
-		if (!group) throw new NotFoundError("Group not found", { groupId });
+		if (!group) throw new NotFoundError('Group not found', { groupId });
 
 		return await this.transactionDao.getBalancesByGroup(groupId);
 	}
@@ -169,11 +169,11 @@ export class ExpenseDomain {
 		amount: number,
 	) {
 		const group = await this.groupDao.findById(groupId);
-		if (!group) throw new NotFoundError("Group not found", { groupId });
+		if (!group) throw new NotFoundError('Group not found', { groupId });
 
 		const expense = this.expenseDao.findById(expenseId);
 		if (!expense)
-			throw new NotFoundError("Expense not found", {
+			throw new NotFoundError('Expense not found', {
 				groupId,
 				senderId,
 			});
@@ -183,7 +183,7 @@ export class ExpenseDomain {
 		});
 
 		if (!sender)
-			throw new NotFoundError("Sender not found in the group", {
+			throw new NotFoundError('Sender not found in the group', {
 				groupId,
 				senderId,
 			});
@@ -193,7 +193,7 @@ export class ExpenseDomain {
 		});
 
 		if (!receiver)
-			throw new NotFoundError("Receiver not found in the group", {
+			throw new NotFoundError('Receiver not found in the group', {
 				groupId,
 				receiverId,
 			});
@@ -252,18 +252,18 @@ export class ExpenseDomain {
 
 	async requestUpload(groupId: string) {
 		const group = await this.groupDao.findById(groupId);
-		if (!group) throw new NotFoundError("Group not found", { groupId });
+		if (!group) throw new NotFoundError('Group not found', { groupId });
 
 		const fileUniqueId = randomUUID();
 		const fileKey = `expenses/${fileUniqueId}.csv`;
 
 		const command = new PutObjectCommand({
-			Bucket: "split-service-storage",
+			Bucket: 'split-service-storage',
 			Key: fileKey,
-			ContentType: "text/csv",
+			ContentType: 'text/csv',
 		});
 
-		const expiration = Duration.fromObject({ hour: 1 }).shiftTo("seconds");
+		const expiration = Duration.fromObject({ hour: 1 }).shiftTo('seconds');
 		const url = await getSignedUrl(s3Client, command, {
 			expiresIn: expiration.seconds,
 		});
@@ -275,7 +275,7 @@ export class ExpenseDomain {
 		});
 
 		const message =
-			"Please upload the CSV file to the pre-signed URL. Be aware the url will expire in 1 hour.";
+			'Please upload the CSV file to the pre-signed URL. Be aware the url will expire in 1 hour.';
 
 		return {
 			url,

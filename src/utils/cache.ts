@@ -1,4 +1,4 @@
-import redis from "../config/redis";
+import redis from '../config/redis';
 
 export async function cache<T>(
 	key: string,
@@ -11,7 +11,7 @@ export async function cache<T>(
 
 	const result = await callback();
 
-	await redis.set(key, JSON.stringify(result), "EX", ttl);
+	await redis.set(key, JSON.stringify(result), 'EX', ttl);
 
 	return result;
 }

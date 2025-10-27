@@ -1,20 +1,20 @@
-import { type Request, type Response, Router } from "express";
-import { StatusCodes } from "http-status-codes";
-import z from "zod";
-import { buildExpenseDomain } from "../../../domain";
+import { type Request, type Response, Router } from 'express';
+import { StatusCodes } from 'http-status-codes';
+import z from 'zod';
+import { buildExpenseDomain } from '../../../domain';
 import {
 	validateBody,
 	validatePathParam,
-} from "../../../middlewares/request-validation";
-import { cache, expireCache } from "../../../utils/cache";
-import { ExpenseValidation, SettlementValidation } from "./validation";
+} from '../../../middlewares/request-validation';
+import { cache, expireCache } from '../../../utils/cache';
+import { ExpenseValidation, SettlementValidation } from './validation';
 
 const router = Router();
 
 const expenseDomain = buildExpenseDomain();
 
 router.post(
-	"/:groupId",
+	'/:groupId',
 	validatePathParam(
 		z.object({
 			groupId: z.uuid(),
@@ -31,7 +31,7 @@ router.post(
 );
 
 router.post(
-	"/:groupId/settlement",
+	'/:groupId/settlement',
 	validatePathParam(
 		z.object({
 			groupId: z.uuid(),
@@ -54,7 +54,7 @@ router.post(
 );
 
 router.get(
-	"/:groupId/balance",
+	'/:groupId/balance',
 	validatePathParam(
 		z.object({
 			groupId: z.uuid(),
@@ -73,7 +73,7 @@ router.get(
 );
 
 router.get(
-	"/:groupId/request-upload",
+	'/:groupId/request-upload',
 	validatePathParam(
 		z.object({
 			groupId: z.uuid(),
