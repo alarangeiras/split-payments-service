@@ -1,5 +1,9 @@
 import Redis from 'ioredis';
+import config from './config';
+import { RedisConfig } from './types';
 
-const redis = new Redis(process.env.REDIS_URI ?? 'redis://localhost:6379');
+const redisConfig = config.get<RedisConfig>('redis');
+
+const redis = new Redis(redisConfig.uri);
 
 export default redis;

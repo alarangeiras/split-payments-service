@@ -1,10 +1,8 @@
 import { Client } from "pg";
 
-const DB_HOST = process.env.DB_HOST || "localhost";
-const DB_PORT = parseInt(process.env.DB_PORT || "5433", 10);
-const DB_USER = process.env.DB_USER || "split_service_user";
-const DB_PASSWORD = process.env.DB_PASSWORD || "split_service_pass";
-const DB_NAME = process.env.DB_NAME || "split-service";
+import config from 'config';
+
+const dbConfig = config.get<{ host: string; port: number; username: string; password: string; database: string }>('database');
 
 const MAX_RETRIES = 30;
 const RETRY_INTERVAL_MS = 1000;
@@ -15,11 +13,11 @@ function delay(ms: number): Promise<void> {
 
 async function checkPostgresConnection(): Promise<boolean> {
 	const client = new Client({
-		user: DB_USER,
-		host: DB_HOST,
-		database: DB_NAME,
-		password: DB_PASSWORD,
-		port: DB_PORT,
+		user: dbConfig.username,
+		host: dbConfig.host,
+		database: dbConfig.database,
+		password: dbConfig.password,
+		port: dbConfig.port,
 		connectionTimeoutMillis: 5000,
 	});
 
@@ -38,7 +36,7 @@ async function checkPostgresConnection(): Promise<boolean> {
 
 async function waitForPostgres(): Promise<void> {
 	console.log(
-		`Waiting for PostgreSQL on ${DB_HOST}:${DB_PORT}...`,
+		`Waiting for PostgreSQL on ${dbConfig.host}:${dbConfig.port}...`,
 	);
 
 	for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
@@ -56,7 +54,7 @@ async function waitForPostgres(): Promise<void> {
 	}
 
 	console.error(
-		`\nFailed to connecto to PostgreSQL on ${DB_HOST}:${DB_PORT} after ${MAX_RETRIES} tries.`,
+		`\nFailed to connecto to PostgreSQL on ${dbConfig.host}:${dbConfig.port} after ${MAX_RETRIES} tries.`,
 	);
 	process.exit(1);
 }

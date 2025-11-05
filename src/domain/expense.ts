@@ -27,6 +27,8 @@ import {
 	buildNotificationDomain,
 	type NotificationDomain,
 } from './notification';
+import config from '../config/config';
+import { AwsConfig } from '../config/types';
 
 export class ExpenseDomain {
 	constructor(
@@ -37,6 +39,7 @@ export class ExpenseDomain {
 		private readonly settlementDao: SettlementDao,
 		private readonly batchQueuDao: BatchQueueDao,
 		private readonly notificationDomain: NotificationDomain,
+		private readonly awsConfig: AwsConfig
 	) {}
 
 	async addExpense(
@@ -255,10 +258,10 @@ export class ExpenseDomain {
 		if (!group) throw new NotFoundError('Group not found', { groupId });
 
 		const fileUniqueId = randomUUID();
-		const fileKey = `expenses/${fileUniqueId}.csv`;
+		const fileKey = `${this.awsConfig.s3.expensesFolder}/${fileUniqueId}.csv`;
 
 		const command = new PutObjectCommand({
-			Bucket: 'split-service-storage',
+			Bucket: this.awsConfig.s3.bucketName,
 			Key: fileKey,
 			ContentType: 'text/csv',
 		});
@@ -293,4 +296,5 @@ export const buildExpenseDomain = () =>
 		buildSettlementDao(),
 		buildBatchQueueDao(),
 		buildNotificationDomain(),
+		config.get<AwsConfig>('aws')
 	);

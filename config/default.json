@@ -1,0 +1,30 @@
+{
+  "database": {
+    "host": "localhost",
+    "port": 5432,
+    "username": "split_service_user",
+    "password": "split_service_pass",
+    "database": "split-service"
+  },
+  "aws": {
+    "region": "us-east-1",
+    "accessKeyId": "test",
+    "secretAccessKey": "test",
+    "sns": {
+      "notification": "arn:aws:sns:us-east-1:000000000000:send-notification-event"
+    },
+    "s3": {
+      "bucketName": "split-payments-bucket",
+      "expensesFolder": "expenses"
+    }
+  },
+  "redis": {
+    "uri": "redis://localhost:6379"
+  },
+  "localstack": {
+    "endpoint": "http://localhost:4566"
+  },
+  "logging": {
+    "level": "info"
+  }
+}

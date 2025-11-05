@@ -1,0 +1,10 @@
+{
+  "database": {
+    "password": "DB_PASSWORD"
+  },
+    "aws": {
+        "region": "AWS_REGION",
+        "accessKeyId": "AWS_ACCESS_KEY_ID",
+        "secretAccessKey": "AWS_SECRET_ACCESS_KEY"
+    }
+}

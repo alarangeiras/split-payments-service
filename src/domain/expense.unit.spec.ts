@@ -11,6 +11,8 @@ import type { ExpenseModel, GroupModel, MemberModel } from '../model';
 import { mockito } from '../utils/mock';
 import { ExpenseDomain } from './expense';
 import type { NotificationDomain } from './notification';
+import { AwsConfig } from '../config/types';
+import config from '../config/config';
 
 describe('ExpenseDomain', () => {
 	let expenseDomain: ExpenseDomain;
@@ -31,6 +33,7 @@ describe('ExpenseDomain', () => {
 			mockito.instance(settlementDaoMock),
 			mockito.instance(batchQueueDaoMock),
 			mockito.instance(notificationDomainMock),
+			config.get<AwsConfig>('aws')
 		);
 	});
 
