@@ -80,15 +80,13 @@ can have future regressions because of lack of tests, so try to keep a more jest
 
 ## How to run the project
 
-- create the .env file, you can use the example provided in the project: `cp .env.example .env`  
-- create the .env.test file, you can use the example provided in the project: `cp .env.test.example .env.test`  
+- install pnpm: `npm i -g pnpm`
 - create the external dependencies, you can run the compose file provided in the project: `docker compose up -d`
-- install the local dependencies: `npm ci`
-- run the migrations using the dev environment: `NODE_ENV=dev npm run migration`  
-- run the dev server: `npm run dev`
+- install the local dependencies: `pnpm install`
+- run the migrations using the dev environment: `NODE_ENV=dev pnpm migration`  
+- run the dev server: `pnpm dev`
 
 ### How to test the project
 
-- integration tests can be ran using `npm run int`
-- unit tests can be ran using: `npm run unit`
-- you can run all at once by using: `npm test`
+- tests can be ran using: `pnpm test ${TEST_NAME}`
+- you can run all at once by using: `pnpm tests`
